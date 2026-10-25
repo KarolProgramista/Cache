@@ -2,9 +2,8 @@ RTL_DIR = rtl
 TB_DIR = tb_sv
 
 RTL_SRC = $(RTL_DIR)/cache.sv
-TB_SRC = $(TB_DIR)/tb_*
+TB_SRC = $(wildcard $(TB_DIR)/*.sv)
 TB_TOP = tb_cache
-SNAPSHOT = $(TB_TOP)_snapshot
 
 .PHONY: all clean
 
