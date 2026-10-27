@@ -14,7 +14,7 @@ class cache_driver;
         cache_transaction tr;
         forever begin
             gen2drv_mbx.get(tr);
-            drive_transaction(tr); 
+            drive_transaction(tr);
         end
     endtask
 

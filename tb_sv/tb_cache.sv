@@ -21,6 +21,7 @@ module tb_cache;
 
     cache_driver drv;
     cache_monitor mon;
+    cache_scoreboard scb;
 
     initial begin
         $dumpfile("wave.vcd");
@@ -30,10 +31,12 @@ module tb_cache;
     initial begin
         drv = new(cif.TB, gen2drv_mbx);
         mon = new(cif.TB, mon2scb_mbx);
+        scb = new(mon2scb_mbx);
     
         fork
             drv.run();
             mon.run();
+            scb.run();
         join_none
 
         cif.reset = 1;
@@ -41,6 +44,22 @@ module tb_cache;
         cif.reset = 0;
         @(posedge clk);
         $display ("Hello world %0h", ram.mem[10]);
+        // Po zakończeniu generowania transakcji i odczekaniu cykli
+        #100;
+
+        $display("\n=======================================================");
+        $display("               VERIFICATION SUMMARY                    ");
+        $display("=======================================================");
+        $display(" TOTAL MATCHES : %0d", scb.match_count);
+        $display(" TOTAL ERRORS  : %0d", scb.error_count);
+
+        if (scb.error_count == 0 && scb.match_count > 0) begin
+            $display(" OVERALL STATUS: >>> TEST PASSED <<<");
+        end else begin
+            $display(" OVERALL STATUS: >>> TEST FAILED <<<");
+        end
+        $display("=======================================================\n");
+
         $finish;
     end
 endmodule

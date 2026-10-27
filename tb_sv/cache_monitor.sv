@@ -11,7 +11,7 @@ class cache_monitor;
 
     task run();
         cache_transaction tr;
-        logic ready_prev = 1'b0;
+        logic ready_prev = 1'b1;
 
         forever begin
             @(posedge vif.clk);
