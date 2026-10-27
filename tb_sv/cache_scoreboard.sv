@@ -38,7 +38,7 @@ class cache_scoreboard;
                 end else begin
                     $display("[%0t] [SCB FAILS]: addr=0x%0h | exp=0x%0h | got=0x%0h",
                         $time, tr.addr, exp_data, tr.dataOut);
-                    match_count++;
+                    error_count++;
 
                 end
             end

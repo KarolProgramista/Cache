@@ -31,11 +31,16 @@ module tb_cache;
     end
 
     initial begin
-        gen = new(gen2drv_mbx, 50);
+        gen = new(gen2drv_mbx, 100);
         drv = new(cif.TB, gen2drv_mbx);
         mon = new(cif.TB, mon2scb_mbx);
         scb = new(mon2scb_mbx);
-    
+
+        cif.reset = 1;
+        #10;
+        cif.reset = 0;
+        #10;
+
         fork
             gen.run();
             drv.run();
@@ -43,13 +48,10 @@ module tb_cache;
             scb.run();
         join_none
 
-        cif.reset = 1;
-        #10
-        cif.reset = 0;
+        wait(gen2drv_mbx.num() == 0);
+        wait(mon2scb_mbx.num() == 0);
+        wait(cif.ready == 1'b1);
         @(posedge clk);
-        $display ("Hello world %0h", ram.mem[10]);
-        // Po zakończeniu generowania transakcji i odczekaniu cykli
-        #500;
 
         $display("\n=======================================================");
         $display("               VERIFICATION SUMMARY                    ");

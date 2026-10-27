@@ -12,6 +12,11 @@ class cache_driver;
 
     task run();
         cache_transaction tr;
+        
+        vif.request   <= 1'b0;
+        vif.we        <= 1'b0;
+        vif.addr      <= 16'h0;
+        vif.cpuDataIn <= 16'h0;
         forever begin
             gen2drv_mbx.get(tr);
             drive_transaction(tr);
@@ -20,6 +25,7 @@ class cache_driver;
 
     task drive_transaction(cache_transaction tr);
         @(posedge vif.clk);
+        #1;
         vif.addr <= tr.addr;
         vif.cpuDataIn <= tr.dataIn;
         vif.we <= tr.we;
@@ -27,9 +33,10 @@ class cache_driver;
 
         do begin
             @(posedge vif.clk);
+            #1;
+            vif.request <= 1'b0;
         end while (vif.ready !== 1'b1);
 
-        vif.request <= 1'b0;
     endtask
 
 endclass

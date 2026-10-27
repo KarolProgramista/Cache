@@ -43,7 +43,7 @@ module cache (addr, we, request, cpuDataIn, cpuDataOut, ready, memAddr, memDataI
 
     integer i, j;
 
-    always @(posedge clk) begin
+    always_ff @(posedge clk) begin
         if (reset) begin
             for (i=0; i < 16; i = i+1) begin
                 for (j=0; j < 4; j=j+1)

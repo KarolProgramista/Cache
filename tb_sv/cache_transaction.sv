@@ -3,7 +3,7 @@ class cache_transaction;
     rand logic [15:0] dataIn;
     rand logic we;
 
-    logic request;
+    rand logic request;
 
     logic ready;
     logic [15:0] dataOut;
@@ -17,6 +17,12 @@ class cache_transaction;
         request == 1'b1;
     }
 
+    // For compatiblity with older versions of verilator
+    function void post_randomize();
+        this.addr = this.addr & 16'h03FF;
+        this.request = 1'b1;
+        this.we = ((this.dataIn%100) < 30) ? 1'b1 : 1'b0;
+    endfunction
 
     function void display (string tag);
         $display("[%0t][%s] REQ=%0b | TYPE=%s | WDATA=0x%0h | ADDR=0x%0h | RDATA=0x%0h | READY=%0b",
