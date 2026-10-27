@@ -1,3 +1,4 @@
+/* verilator lint_off WIDTHTRUNC */
 typedef class cache_transaction;
 
 module tb_cache;
@@ -22,6 +23,7 @@ module tb_cache;
     cache_driver drv;
     cache_monitor mon;
     cache_scoreboard scb;
+    cache_generator gen;
 
     initial begin
         $dumpfile("wave.vcd");
@@ -29,11 +31,13 @@ module tb_cache;
     end
 
     initial begin
+        gen = new(gen2drv_mbx, 50);
         drv = new(cif.TB, gen2drv_mbx);
         mon = new(cif.TB, mon2scb_mbx);
         scb = new(mon2scb_mbx);
     
         fork
+            gen.run();
             drv.run();
             mon.run();
             scb.run();
@@ -45,7 +49,7 @@ module tb_cache;
         @(posedge clk);
         $display ("Hello world %0h", ram.mem[10]);
         // Po zakończeniu generowania transakcji i odczekaniu cykli
-        #100;
+        #500;
 
         $display("\n=======================================================");
         $display("               VERIFICATION SUMMARY                    ");

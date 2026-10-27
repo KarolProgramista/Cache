@@ -10,7 +10,7 @@ TB_TOP = tb_cache
 all: simulate
 
 build:
-	verilator --binary --trace  -I$(RTL_DIR) $(RTL_SRC) $(TB_SRC) --top-module $(TB_TOP)
+	verilator --binary --trace -Wno-CONSTRAINTIGN  -I$(RTL_DIR) $(RTL_SRC) $(TB_SRC) --top-module $(TB_TOP)
 
 simulate: build
 	./obj_dir/V$(TB_TOP)

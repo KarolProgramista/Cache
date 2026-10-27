@@ -11,7 +11,7 @@ class cache_monitor;
 
     task run();
         cache_transaction tr;
-        logic ready_prev = 1'b1;
+        logic ready_prev = 1'b0;
 
         forever begin
             @(posedge vif.clk);
@@ -30,8 +30,8 @@ class cache_monitor;
 
                 mon2scb_mbx.put(tr);
             end
+            ready_prev = vif.ready;
         end
 
-        ready_prev = vif.ready;
     endtask
 endclass

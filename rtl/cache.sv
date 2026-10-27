@@ -38,8 +38,8 @@ module cache (addr, we, request, cpuDataIn, cpuDataOut, ready, memAddr, memDataI
     assign index = addr[5:2];
     assign offset = addr[1:0];
     assign hit = (valid[index] === 1'b1) && (tags[index] == tag);
-    assign memory_address = (index << 2)+6'(offset);
-    assign counted_memory_address = (index << 2)+6'(word_counter);
+    assign memory_address = (6'(index) << 2)+6'(offset);
+    assign counted_memory_address = (6'(index) << 2) +6'(word_counter);
 
     integer i, j;
 
@@ -55,7 +55,7 @@ module cache (addr, we, request, cpuDataIn, cpuDataOut, ready, memAddr, memDataI
 
             word_counter <= 2'b0;
             memWe <= 1'b0;
-            state = IDLE;
+            state <= IDLE;
             ready <= 1'b1;
             cpuDataOut <= 16'b0;
             memAddr <= 16'b0;
@@ -95,7 +95,7 @@ module cache (addr, we, request, cpuDataIn, cpuDataOut, ready, memAddr, memDataI
                         cpuDataOut <= memDataIn;
 
                     if (dirty[index]) begin
-                        memAddr <= 16'(tags[index] << 6) | 16'(index << 2) | 16'(word_counter);
+                        memAddr <= 16'(16'(tags[index]) << 6) | 16'(16'(index) << 2) | 16'(word_counter);
                         memWe <= 1'b1;
                         memDataOut <= memory_blocks[counted_memory_address];
                     end

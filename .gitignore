@@ -4,3 +4,4 @@
 **/sim_build
 **/obj_dir
 *.vcd
+*.filelist

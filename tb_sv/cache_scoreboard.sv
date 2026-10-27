@@ -1,3 +1,4 @@
+/* verilator lint_off WIDTHTRUNC */
 typedef class cache_transaction;
 
 class cache_scoreboard;
