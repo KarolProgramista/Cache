@@ -2,3 +2,5 @@
 .venv
 **/results.xml
 **/sim_build
+**/obj_dir
+*.vcd
