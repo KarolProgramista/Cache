@@ -47,7 +47,8 @@ module tb_cache;
             mon.run();
             scb.run();
         join_none
-
+        
+        @(posedge clk);
         wait(gen2drv_mbx.num() == 0);
         wait(mon2scb_mbx.num() == 0);
         wait(cif.ready == 1'b1);
