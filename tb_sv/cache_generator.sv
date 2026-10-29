@@ -1,3 +1,4 @@
+
 /* verilator lint_off WIDTHTRUNC */
 typedef class cache_transaction;
 
@@ -73,3 +74,4 @@ class cache_generator;
         end
     endtask
 endclass
+/*verilator coverage_on*/
