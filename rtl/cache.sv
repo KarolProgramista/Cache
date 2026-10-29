@@ -18,9 +18,9 @@ module cache (addr, we, request, cpuDataIn, cpuDataOut, ready, memAddr, memDataI
 
     reg [1:0] word_counter;
     reg [15:0] memory_blocks [64];
-    reg [9:0] tags [15];
-    reg valid [15];
-    reg dirty [15];
+    reg [9:0] tags [16];
+    reg valid [16];
+    reg dirty [16];
     wire [3:0] index;
     wire [1:0] offset;
     wire [9:0] tag;

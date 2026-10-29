@@ -31,7 +31,7 @@ module tb_cache;
     end
 
     initial begin
-        gen = new(gen2drv_mbx, 100);
+        gen = new(gen2drv_mbx);
         drv = new(cif.TB, gen2drv_mbx);
         mon = new(cif.TB, mon2scb_mbx);
         scb = new(mon2scb_mbx);
@@ -42,17 +42,58 @@ module tb_cache;
         #10;
 
         fork
-            gen.run();
+            gen.run_random();
             drv.run();
             mon.run();
             scb.run();
         join_none
-        
+
         @(posedge clk);
+
+
+        $display("\n=======================================================");
+        $display("                   TESTING RANDOM");
         wait(gen2drv_mbx.num() == 0);
         wait(mon2scb_mbx.num() == 0);
         wait(cif.ready == 1'b1);
+        #100;
+        $display(" TOTAL MATCHES : %0d", scb.match_count);
+        $display(" TOTAL ERRORS  : %0d", scb.error_count);
+        $display("=======================================================\n");
+
+        fork
+            gen.run_raw();
+        join_none
+
         @(posedge clk);
+
+
+        $display("\n=======================================================");
+        $display("                   TESTING READ AFTER WRITE");
+        wait(gen2drv_mbx.num() == 0);
+        wait(mon2scb_mbx.num() == 0);
+        wait(cif.ready == 1'b1);
+        #100;
+        $display(" TOTAL MATCHES : %0d", scb.match_count);
+        $display(" TOTAL ERRORS  : %0d", scb.error_count);
+        $display("=======================================================\n");
+
+        fork
+            gen.run_eviction();
+        join_none
+
+        @(posedge clk);
+
+
+        $display("\n=======================================================");
+        $display("                   TESTING READ AFTER WRITE");
+        wait(gen2drv_mbx.num() == 0);
+        wait(mon2scb_mbx.num() == 0);
+        wait(cif.ready == 1'b1);
+        #500;
+        $display(" TOTAL MATCHES : %0d", scb.match_count);
+        $display(" TOTAL ERRORS  : %0d", scb.error_count);
+        $display("=======================================================\n");
 
         $display("\n=======================================================");
         $display("               VERIFICATION SUMMARY                    ");
