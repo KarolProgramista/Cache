@@ -5,12 +5,14 @@ RTL_SRC = $(RTL_DIR)/cache.sv
 TB_SRC = $(wildcard $(TB_DIR)/*.sv)
 TB_TOP = tb_cache
 
+VFLAGS = --binary --trace -Wno-CONSTRAINTIGN --assert 
+
 .PHONY: all clean
 
 all: simulate
 
 build:
-	verilator --binary --trace -Wno-CONSTRAINTIGN  -I$(RTL_DIR) $(RTL_SRC) $(TB_SRC) --top-module $(TB_TOP)
+	verilator  $(VFLAGS) -I$(RTL_DIR) $(RTL_SRC) $(TB_SRC) --top-module $(TB_TOP)
 
 simulate: build
 	./obj_dir/V$(TB_TOP)
