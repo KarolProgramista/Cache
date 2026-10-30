@@ -37,3 +37,15 @@ Reset is synchronous. Sets every internal registers and outputs to 0s. Sets stat
 
 ## 5. Synthesis
 Module was successfuly synthesised using **Yosys**. Post-synthesis simulation was verified against SV Testbench.
+
+## How to Run
+```bash
+# Run SystemVerilog Simulation
+make simulate
+
+# Run Logic Synthesis (Yosys)
+make synth
+
+# Run Post-Synthesis Gate-Level Simulation
+make sim_synth
+```
