@@ -34,3 +34,6 @@ Cache supports only one-cycle memories.
 
 ## 4. Reset behaviour
 Reset is synchronous. Sets every internal registers and outputs to 0s. Sets state to IDLE and *ready* to 1.
+
+## 5. Synthesis
+Module was successfuly synthesised using **Yosys**. Post-synthesis simulation was verified against SV Testbench.

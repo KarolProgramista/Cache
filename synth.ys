@@ -1,0 +1,10 @@
+read_verilog -sv rtl/cache.sv
+hierarchy -top cache
+
+proc; opt; fsm; opt; memory; opt
+
+techmap; opt; dfflibmap -liberty /dev/null; opt; abc; opt
+
+stat
+
+write_verilog -noattr netlist/cache_synth_netlist.v
