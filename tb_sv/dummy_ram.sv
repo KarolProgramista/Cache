@@ -1,3 +1,4 @@
+
 module dummy_ram (cache_if.RAM ram_if);
     logic [15:0] mem [1023];
 

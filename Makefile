@@ -13,16 +13,25 @@ SYNTH_VFLAGS = --binary --trace \
                -Wno-CONSTRAINTIGN \
                -Wno-BLKSEQ \
 
+<<<<<<< HEAD
 .PHONY: all clean synth simulate sim_synth
+=======
+VFLAGS = --binary --trace --coverage -Wno-CONSTRAINTIGN --assert
+
+COVERAGE_TOOL = verilator_coverage
+
+.PHONY: all clean coverage
+>>>>>>> 79a458147a53647074ccf593b74b5d2ba670b6d2
 
 all: simulate
 
 build:
-	verilator --binary --trace -Wno-CONSTRAINTIGN  -I$(RTL_DIR) $(RTL_SRC) $(TB_SRC) --top-module $(TB_TOP)
+	verilator  $(VFLAGS) -I$(RTL_DIR) $(RTL_SRC) $(TB_SRC) --top-module $(TB_TOP)
 
 simulate: build
 	./obj_dir/V$(TB_TOP)
 
+<<<<<<< HEAD
 synth:
 	mkdir -p netlist
 	yosys -s synth.ys | tee synth.log
@@ -32,6 +41,14 @@ sim_synth: synth
 		netlist/cache_synth_netlist.v $(TB_SRC) \
 		--top-module $(TB_TOP) -o Vcache_synth
 	./obj_dir/Vcache_synth
+=======
+coverage: simulate
+	@echo "--- GENERATING COVERAGE REPORT ---"
+	$(COVERAGE_TOOL) --annotate-min 1 coverage.dat
+	mkdir -p logs/annotated
+	$(COVERAGE_TOOL) --annotate logs/annotated coverage.dat
+	@echo "Annotated report saved in logs/annotated/"
+>>>>>>> 79a458147a53647074ccf593b74b5d2ba670b6d2
 
 clean:
-	rm -rf obj_dir *.log *.pb *.jou *.vcd
+	rm -rf obj_dir *.log *.pb *.jou *.vcd coverage.dat logs/ coverage.info coverage_html/
